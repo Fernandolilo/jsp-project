@@ -28,13 +28,9 @@ public class cadastrarProdutoController extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		System.out.println("RECEBIDO A REQQUISIÇÃO");
 		
-		String descricao = request.getParameter("descricao");
-		double preco = Double.parseDouble(request.getParameter("preco"));
-		int quantidade = Integer.parseInt(request.getParameter("quantidade"));
-
-		System.out.println("Nome: " + descricao);
-		System.out.println("Quantidade: " + quantidade);
-		System.out.println("Preço: " + preco);
+		//agora passando um parametro mais semantico, como os dados são iguais, apenas preciso pegar o doPost.
+		
+		this.doPost(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
