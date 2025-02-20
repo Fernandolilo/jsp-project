@@ -27,6 +27,14 @@ public class cadastrarProdutoController extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		System.out.println("RECEBIDO A REQQUISIÇÃO");
+		
+		String descricao = request.getParameter("descricao");
+		double preco = Double.parseDouble(request.getParameter("preco"));
+		int quantidade = Integer.parseInt(request.getParameter("quantidade"));
+
+		System.out.println("Nome: " + descricao);
+		System.out.println("Quantidade: " + quantidade);
+		System.out.println("Preço: " + preco);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
