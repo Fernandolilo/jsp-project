@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,9 +29,10 @@ public class cadastrarProdutoController extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		System.out.println("RECEBIDO A REQQUISIÇÃO");
-		
-		//agora passando um parametro mais semantico, como os dados são iguais, apenas preciso pegar o doPost.
-		
+
+		// agora passando um parametro mais semantico, como os dados são iguais, apenas
+		// preciso pegar o doPost.
+
 		this.doPost(request, response);
 	}
 
@@ -39,17 +42,44 @@ public class cadastrarProdutoController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		String descricao = request.getParameter("descricao");
-		double preco = Double.parseDouble(request.getParameter("preco"));
-		int quantidade = Integer.parseInt(request.getParameter("quantidade"));
-		boolean online = false;
-		if (request.getParameter("online") != null && request.getParameter("online").equals("on")) {
-			online = true;
-		}
+		double preco;
+		int quantidade;
+		String mensagem;
+		//redirecionando caso tudo ocorra com sucesso!
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrarProduto.jsp");
 
-		System.out.println("Nome: " + descricao);
-		System.out.println("Quantidade: " + quantidade);
-		System.out.println("Preço: " + preco);
-		System.out.println("Disponivel: " + online);
+		if (
+				descricao != null && !descricao.isEmpty() 
+				&& request.getParameter("quantidade") != null
+				&& !request.getParameter("quantidade").isEmpty() 
+				&& request.getParameter("preco") != null
+				&& !request.getParameter("preco").isEmpty()) {
+
+			quantidade = Integer.parseInt(request.getParameter("quantidade"));
+			preco = Double.parseDouble(request.getParameter("preco"));
+
+			/*System.out.println("Nome: " + descricao);
+			System.out.println("Quantidade: " + quantidade);
+			System.out.println("Preço: " + preco);*/
+			boolean online = false;
+			if (request.getParameter("online") != null && request.getParameter("online").equals("on")) {
+				online = true;
+				//System.out.println("Disponivel: " + online);			
+			} 
+			mensagem ="Produto cadastrado com sucesso!";
+			
+			request.setAttribute("mensagem", mensagem);
+						
+			//para que o dispatcher atue precisamos do forward desta forma
+			dispatcher.forward(request, response);
+			}else {
+				mensagem = "Os campos precisão ser todos preenchidos!";
+				request.setAttribute("mensagem", mensagem);		
+				
+				//para que o dispatcher atue precisamos do forward desta forma
+				dispatcher.forward(request, response);
+
+		}
 
 	}
 
