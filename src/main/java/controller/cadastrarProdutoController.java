@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Produto;
+
 /**
  * Servlet implementation class cadastrarProdutoController
  */
@@ -42,9 +44,12 @@ public class cadastrarProdutoController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		String descricao = request.getParameter("descricao");
-		double preco;
-		int quantidade;
+		
 		String mensagem;
+		
+		
+		
+		
 		//redirecionando caso tudo ocorra com sucesso!
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrarProduto.jsp");
 
@@ -54,7 +59,8 @@ public class cadastrarProdutoController extends HttpServlet {
 				&& !request.getParameter("quantidade").isEmpty() 
 				&& request.getParameter("preco") != null
 				&& !request.getParameter("preco").isEmpty()) {
-
+			double preco;
+			int quantidade;
 			quantidade = Integer.parseInt(request.getParameter("quantidade"));
 			preco = Double.parseDouble(request.getParameter("preco"));
 
@@ -64,21 +70,28 @@ public class cadastrarProdutoController extends HttpServlet {
 			boolean online = false;
 			if (request.getParameter("online") != null && request.getParameter("online").equals("on")) {
 				online = true;
-				//System.out.println("Disponivel: " + online);			
-			} 
-			mensagem ="Produto cadastrado com sucesso!";
+				
+				mensagem ="Produto cadastrado com sucesso!";
+				
+				request.setAttribute("mensagem", mensagem);
+							
+				//para que o dispatcher atue precisamos do forward desta forma
+				dispatcher.forward(request, response);
+				
+				Produto produto= new Produto(descricao, quantidade, preco, online);
+				
+				//System.out.println("Disponivel: " + online);	
 			
-			request.setAttribute("mensagem", mensagem);
-						
-			//para que o dispatcher atue precisamos do forward desta forma
-			dispatcher.forward(request, response);
+				
+				produto.salvar();
+			} 
+			
 			}else {
 				mensagem = "Os campos precisão ser todos preenchidos!";
 				request.setAttribute("mensagem", mensagem);		
 				
 				//para que o dispatcher atue precisamos do forward desta forma
 				dispatcher.forward(request, response);
-
 		}
 
 	}
